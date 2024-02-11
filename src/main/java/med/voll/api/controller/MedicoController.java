@@ -1,6 +1,7 @@
 package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import med.voll.api.endereco.Endereco;
 import med.voll.api.medico.Medico;
 import med.voll.api.medico.MedicoRecord;
@@ -20,7 +21,7 @@ public class MedicoController {
 
     @PostMapping // type http post
     @Transactional // open a transaction to save the data
-    public void create(@RequestBody MedicoRecord dados) {
+    public void create(@RequestBody @Valid MedicoRecord dados) { // @Validate will use bean validation and will validate the object
 //        System.out.println(dados);
         repository.save(new Medico(dados)); // create a new Medico object and save it to the database
     }
