@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import med.voll.api.endereco.Endereco;
 
-@Table(name = "medicos")
-@Entity(name = "Medico")
-@Getter
+@Table(name = "medicos") // this annotation will change the table name to "medicos"
+@Entity(name = "Medico") // this annotation will change the entity name to "Medico"
+@Getter // this annotation will generate the getters for all the fields
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id") // this annotation will generate the equals and hashCode methods for the field "id"
 public class Medico {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
