@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 // DTO pattern
-public record dadosEndereco(
+public record EnderecoRecord(
         @NotBlank
         String logradouro,
         @NotBlank
