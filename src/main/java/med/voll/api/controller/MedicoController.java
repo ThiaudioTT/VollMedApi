@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MedicoController {
 
     @Autowired
-    private MedicoRepository repository;
+    private MedicoRepository repository; // inject the repository
 
     @PostMapping // type http post
     @Transactional // open a transaction to save the data
