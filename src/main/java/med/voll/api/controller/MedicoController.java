@@ -44,4 +44,11 @@ public class MedicoController {
         // update the medico
         medicoToUpdate.update(medico); // JPA will automatically update the medico in the database because we are inside a transaction
     }
+
+    @DeleteMapping("/{id}") // Dynamic path
+    @Transactional
+    public void delete(@PathVariable Long id) {
+        this.repository.deleteById(id); // delete the medico by id
+    }
+
 }
