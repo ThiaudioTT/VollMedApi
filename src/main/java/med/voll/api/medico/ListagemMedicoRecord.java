@@ -1,6 +1,7 @@
 package med.voll.api.medico;
 
 public record ListagemMedicoRecord(
+        Long id,
         String nome,
         String email,
         String crm,
@@ -10,6 +11,6 @@ public record ListagemMedicoRecord(
 
 
     public ListagemMedicoRecord(Medico medico) { // to convert medico to ListagemMedicoRecord
-        this(medico.getNome(), medico.getEmail(), medico.getCrm(), medico.getEspecialidade());
+        this(medico.getId(),medico.getNome(), medico.getEmail(), medico.getCrm(), medico.getEspecialidade());
     }
 }
