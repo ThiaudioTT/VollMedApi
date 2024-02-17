@@ -2,18 +2,12 @@ package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.voll.api.endereco.Endereco;
-import med.voll.api.medico.ListagemMedicoRecord;
-import med.voll.api.medico.Medico;
-import med.voll.api.medico.MedicoRecord;
-import med.voll.api.medico.MedicoRepository;
+import med.voll.api.medico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/medicos")
@@ -38,4 +32,16 @@ public class MedicoController {
                 .map(ListagemMedicoRecord::new); // map the medicos to the ListagemMedicoRecord
     }
 
+    @PutMapping
+//    @PutMapping("/{id}") // we can use this to get the id from the path and in the code use @PathVariable("id") Long id
+    @Transactional // for every update we need to open a transaction
+    public void update(@RequestBody @Valid UpdateMedicoDTO medico) {
+        // we need to find the medico by id
+        Medico medicoToUpdate = this.repository.findById(medico.id())
+                .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
+
+
+        // update the medico
+        medicoToUpdate.update(medico); // JPA will automatically update the medico in the database because we are inside a transaction
+    }
 }
