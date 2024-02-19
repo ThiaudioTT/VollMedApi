@@ -48,4 +48,4 @@ This project was made alongside the [Alura](https://cursos.alura.com.br/formacao
 
 And more!
 
-<img src="https://cdn.donmai.us/original/1f/eb/__ganyu_and_ganyu_genshin_impact_drawn_by_tatty__1feb1e01ebec67c9666892318d502861.jpg" style="width: 250px">
+<img src="https://cdn.donmai.us/sample/1f/eb/__ganyu_and_ganyu_genshin_impact_drawn_by_tatty__sample-1feb1e01ebec67c9666892318d502861.jpg" style="width: 250px">
