@@ -31,4 +31,10 @@ public class Paciente {
         this.cpf = dados.cpf();
         this.endereco = new Endereco(dados.endereco());
     }
+
+    public void update(UpdatePacienteDTO paciente) {
+        if(paciente.nome() != null) this.nome = paciente.nome();
+        if(paciente.telefone() != null) this.telefone = paciente.telefone();
+        if(paciente.endereco() != null) this.endereco = new Endereco(paciente.endereco());
+    }
 }
