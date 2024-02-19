@@ -26,7 +26,7 @@ public class PacienteController {
     public Page<ListagemPacienteRecord> list(Pageable pageable) {
         // pageable is an object that contains the page number,
         // the page size, the sort and the filter provided by the user of the API
-        return this.pacienteRepository.findAll(pageable).map(ListagemPacienteRecord::new);
+        return this.pacienteRepository.findAllByAtivoTrue(pageable).map(ListagemPacienteRecord::new);
     }
 
     // update for paciente
@@ -38,5 +38,14 @@ public class PacienteController {
                 .orElseThrow(() -> new RuntimeException("Paciente not found"));
 
         pacienteToUpdate.update(paciente);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void delete(@PathVariable Long id) {
+        Paciente pacienteToInactivate = this.pacienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Paciente not found"));
+        pacienteToInactivate.inactivate();
+        this.pacienteRepository.save(pacienteToInactivate);
     }
 }

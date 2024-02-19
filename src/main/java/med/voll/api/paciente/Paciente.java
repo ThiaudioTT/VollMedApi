@@ -24,6 +24,8 @@ public class Paciente {
     @Embedded
     private Endereco endereco;
 
+    private boolean ativo;
+
     public Paciente(PacienteRecord dados) {
         this.nome = dados.nome();
         this.email = dados.email();
@@ -36,5 +38,9 @@ public class Paciente {
         if(paciente.nome() != null) this.nome = paciente.nome();
         if(paciente.telefone() != null) this.telefone = paciente.telefone();
         if(paciente.endereco() != null) this.endereco = new Endereco(paciente.endereco());
+    }
+
+    public void inactivate() {
+        this.ativo = false;
     }
 }
