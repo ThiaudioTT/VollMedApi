@@ -28,7 +28,7 @@ public class MedicoController {
     public Page<ListagemMedicoRecord> list(@PageableDefault(size = 10) Pageable pageable) {
         // with @pageableDefault we can set the default page size
         // when using pagination, we don't return a list, we return a page
-        return this.repository.findAll(pageable)// return all the medicos
+        return this.repository.findAllByAtivoTrue(pageable)// return all the medicos
                 .map(ListagemMedicoRecord::new); // map the medicos to the ListagemMedicoRecord
     }
 
@@ -47,8 +47,13 @@ public class MedicoController {
 
     @DeleteMapping("/{id}") // Dynamic path
     @Transactional
-    public void delete(@PathVariable Long id) {
-        this.repository.deleteById(id); // delete the medico by id
+    public void delete(@PathVariable Long id) { // this inactivates the medico
+        // this.repository.deleteById(id); // delete the medico by id
+
+        Medico medicoToInactivate = this.repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
+        medicoToInactivate.inactivate(); // inactivate the medico
+        this.repository.save(medicoToInactivate); // save the medico
     }
 
 }
