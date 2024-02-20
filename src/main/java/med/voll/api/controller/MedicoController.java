@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -47,13 +48,16 @@ public class MedicoController {
 
     @DeleteMapping("/{id}") // Dynamic path
     @Transactional
-    public void delete(@PathVariable Long id) { // this inactivates the medico
+    public ResponseEntity<Void> delete(@PathVariable Long id) { // this inactivates the medico
         // this.repository.deleteById(id); // delete the medico by id
 
         Medico medicoToInactivate = this.repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
         medicoToInactivate.inactivate(); // inactivate the medico
         this.repository.save(medicoToInactivate); // save the medico
+
+        return ResponseEntity.noContent().build(); // return a 204 no content
+        // we can return void, but it's better to return a response entity
     }
 
 }
