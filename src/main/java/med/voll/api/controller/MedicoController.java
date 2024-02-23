@@ -22,7 +22,7 @@ public class MedicoController {
 
     @PostMapping // type http post
     @Transactional // open a transaction to save the data
-    public ResponseEntity<UpdatedMedicoDTO> create(
+    public ResponseEntity<DetailMedicoDTO> create(
             @RequestBody @Valid MedicoRecord dados, // @Validate will use bean validation and will validate the object
             UriComponentsBuilder uriBuilder
     ) {
@@ -35,7 +35,14 @@ public class MedicoController {
         URI URI = uriBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri(); // create the URI of the created object
 
         // return the created object with the URI location, doing this the client can access the created object (This is a good practice)
-        return ResponseEntity.created(URI).body(new UpdatedMedicoDTO(medico)); // return a 201 created and the URI of the created object
+        return ResponseEntity.created(URI).body(new DetailMedicoDTO(medico)); // return a 201 created and the URI of the created object
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DetailMedicoDTO> getMedico(@PathVariable Long id) {
+        Medico medico = this.repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
+        return ResponseEntity.ok(new DetailMedicoDTO(medico));
     }
 
 
@@ -52,7 +59,7 @@ public class MedicoController {
     @PutMapping
 //    @PutMapping("/{id}") // we can use this to get the id from the path and in the code use @PathVariable("id") Long id
     @Transactional // for every update we need to open a transaction
-    public ResponseEntity<UpdatedMedicoDTO> update(@RequestBody @Valid UpdateMedicoDTO medico) {
+    public ResponseEntity<DetailMedicoDTO> update(@RequestBody @Valid UpdateMedicoDTO medico) {
         // we need to find the medico by id
         Medico medicoToUpdate = this.repository.findById(medico.id())
                 .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
@@ -63,7 +70,7 @@ public class MedicoController {
 
         // it is not recommended to return JPA entities, so we will return a DTO
         // And it is good to return the updated object with the http header location to access the updated object (but this we will do in the create method)
-        return ResponseEntity.ok(new UpdatedMedicoDTO(medicoToUpdate));
+        return ResponseEntity.ok(new DetailMedicoDTO(medicoToUpdate));
     }
 
     @DeleteMapping("/{id}") // Dynamic path

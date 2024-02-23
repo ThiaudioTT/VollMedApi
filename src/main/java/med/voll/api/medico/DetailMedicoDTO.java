@@ -1,9 +1,8 @@
 package med.voll.api.medico;
 
 import med.voll.api.endereco.Endereco;
-import med.voll.api.endereco.EnderecoRecord;
 
-public record UpdatedMedicoDTO(
+public record DetailMedicoDTO(
         Long id,
         String nome,
         String email,
@@ -13,7 +12,7 @@ public record UpdatedMedicoDTO(
         Endereco endereco
 ) {
 
-    public UpdatedMedicoDTO(Medico medico) {
+    public DetailMedicoDTO(Medico medico) {
         this(medico.getId(), medico.getNome(), medico.getEmail(), medico.getTelefone(), medico.getCrm(), medico.getEspecialidade(), medico.getEndereco());
     }
 }
