@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.domain.paciente.*;
@@ -34,7 +35,7 @@ public class PacienteController {
     @GetMapping("/{id}")
     public ResponseEntity<DetailPacienteDTO> get(@PathVariable Long id) {
         Paciente paciente = this.pacienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Paciente not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Paciente not found"));
         return ResponseEntity.ok(new DetailPacienteDTO(paciente));
     }
 
@@ -51,7 +52,7 @@ public class PacienteController {
     public ResponseEntity<DetailPacienteDTO> update(@RequestBody @Valid UpdatePacienteDTO paciente) {
 //        System.out.println(paciente);
         Paciente pacienteToUpdate = this.pacienteRepository.findById(paciente.id())
-                .orElseThrow(() -> new RuntimeException("Paciente not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Paciente not found"));
 
         pacienteToUpdate.update(paciente);
 
@@ -62,7 +63,7 @@ public class PacienteController {
     @Transactional
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Paciente pacienteToInactivate = this.pacienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Paciente not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Paciente not found"));
         pacienteToInactivate.inactivate();
         this.pacienteRepository.save(pacienteToInactivate);
 

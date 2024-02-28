@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.domain.medico.*;
@@ -41,7 +42,7 @@ public class MedicoController {
     @GetMapping("/{id}")
     public ResponseEntity<DetailMedicoDTO> getMedico(@PathVariable Long id) {
         Medico medico = this.repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
+                .orElseThrow(() -> new EntityNotFoundException("Medico not found")); // if the medico is not found, throw an exception
         return ResponseEntity.ok(new DetailMedicoDTO(medico));
     }
 
@@ -62,7 +63,7 @@ public class MedicoController {
     public ResponseEntity<DetailMedicoDTO> update(@RequestBody @Valid UpdateMedicoDTO medico) {
         // we need to find the medico by id
         Medico medicoToUpdate = this.repository.findById(medico.id())
-                .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
+                .orElseThrow(() -> new EntityNotFoundException("Medico not found")); // if the medico is not found, throw an exception
 
 
         // update the medico
@@ -79,7 +80,7 @@ public class MedicoController {
         // this.repository.deleteById(id); // delete the medico by id
 
         Medico medicoToInactivate = this.repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Medico not found")); // if the medico is not found, throw an exception
+                .orElseThrow(() -> new EntityNotFoundException("Medico not found")); // if the medico is not found, throw an exception
         medicoToInactivate.inactivate(); // inactivate the medico
         this.repository.save(medicoToInactivate); // save the medico
 
