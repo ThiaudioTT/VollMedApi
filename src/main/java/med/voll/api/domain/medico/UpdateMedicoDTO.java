@@ -1,9 +1,8 @@
-package med.voll.api.medico;
+package med.voll.api.domain.medico;
 
-import jakarta.persistence.Embedded;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import med.voll.api.endereco.EnderecoRecord;
+import med.voll.api.domain.endereco.EnderecoRecord;
 
 // DTO for updating a medico
 public record UpdateMedicoDTO(

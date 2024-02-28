@@ -1,4 +1,4 @@
-package med.voll.api.paciente;
+package med.voll.api.domain.paciente;
 
 // DTO para listar os pacientes
 public record ListagemPacienteRecord(
