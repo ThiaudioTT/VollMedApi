@@ -45,6 +45,8 @@ This project was made alongside the [Alura](https://cursos.alura.com.br/formacao
 - DTOs for data transfer
 - How to use the @Valid annotation for validation
 - How to use the @Transactional annotation for transactions
+- Error management
+- Authentication and authorization
 
 And more!
 
