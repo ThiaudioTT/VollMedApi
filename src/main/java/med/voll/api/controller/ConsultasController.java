@@ -16,6 +16,6 @@ public class ConsultasController {
     @PostMapping("/agendar")
     @Transactional
     public void agendarConsulta(@RequestBody @Valid ConsultaRequestDTO consulta) {
-
+        System.out.println("Agendando consulta: " + consulta.toString());
     }
 }
