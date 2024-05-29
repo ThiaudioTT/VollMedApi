@@ -1,6 +1,7 @@
 package med.voll.api.domain.consultas;
 
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +13,9 @@ public record ConsultaRequestDTO(
         @NotBlank(message = "Nome do paciente é obrigatório") String nomePaciente,
         @NotBlank(message = "Nome do médico é obrigatório") String nomeMedico,
 
-        @NotNull(message = "Data da consulta é obrigatória")LocalDateTime dataConsulta
+        @NotNull(message = "Data da consulta é obrigatória")
+        @Future(message = "Data da consulta deve ser futura")
+        LocalDateTime dataConsulta
 
         ) {
 }
