@@ -3,6 +3,7 @@ package med.voll.api.infra.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import med.voll.api.domain.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,8 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
+        } catch (TokenExpiredException exception) {
+            throw new RuntimeException("Token expired.", exception);
         } catch (Exception exception) {
             throw new RuntimeException("Error to get subject from token.", exception);
         }
