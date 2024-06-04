@@ -3,12 +3,17 @@ package med.voll.api.infra.exceptions;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.List;
+
+/**
+ * This is a class to handle exceptions in the application
+ */
 
 @RestControllerAdvice // This annotation is used to handle exceptions in the whole application
 public class ErrorClass {
@@ -27,6 +32,12 @@ public class ErrorClass {
         List<FieldError> errors = exception.getFieldErrors();
 
         return ResponseEntity.badRequest().body(errors.stream().map(Error::new).toList());
+    }
+
+    // Handle 400 for invalid JSON and other errors like it
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handle400(HttpMessageNotReadableException exception) {
+        return ResponseEntity.badRequest().body("Invalid JSON. Check the request body");
     }
 
     // 500 Internal Server Error
