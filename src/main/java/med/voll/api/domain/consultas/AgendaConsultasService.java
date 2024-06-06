@@ -1,5 +1,6 @@
 package med.voll.api.domain.consultas;
 
+import jakarta.persistence.EntityNotFoundException;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,9 @@ public class AgendaConsultasService {
         this.consultaRepo.save(new Consulta(
                 null,
                 this.medicoRepo.findById(consulta.idMedico())
-                                .orElseThrow(() -> new RuntimeException("Médico não encontrado")),
+                                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado")),
                 this.pacienteRepo.findById(consulta.idPaciente())
-                        .orElseThrow(() -> new RuntimeException("Paciente não encontrado")),
+                        .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado")),
                 consulta.dataConsulta()
         ));
     }
