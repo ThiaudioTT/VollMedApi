@@ -19,17 +19,21 @@ public class AgendaConsultasService {
     private PacienteRepository pacienteRepo;
 
     // this is where the business logic should be
-    public void agendarConsulta(ConsultaRequestDTO consulta) {
+    public Consulta agendarConsulta(ConsultaDTO consulta) {
 
         // using .orElseThrow() to throw an exception if the id is not found is better than using .get() who throws a NoSuchElementException
         // this way we can throw a custom exception and give a message to the user
-        this.consultaRepo.save(new Consulta(
+        Consulta consultaAgendada = new Consulta(
                 null,
                 this.medicoRepo.findById(consulta.idMedico())
-                                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado")),
+                        .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado")),
                 this.pacienteRepo.findById(consulta.idPaciente())
                         .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado")),
                 consulta.dataConsulta()
-        ));
+        );
+
+        this.consultaRepo.save(consultaAgendada);
+
+        return consultaAgendada;
     }
 }

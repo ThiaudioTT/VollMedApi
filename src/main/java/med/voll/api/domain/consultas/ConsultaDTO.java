@@ -2,13 +2,13 @@ package med.voll.api.domain.consultas;
 
 
 import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import med.voll.api.domain.medico.Especialidade;
 
 import java.time.LocalDateTime;
 
-public record ConsultaRequestDTO(
+public record ConsultaDTO(
 
         // not blank is used with strings to validate if the string is not null and not empty
 //        @NotBlank(message = "Nome do paciente é obrigatório") String nomePaciente,
@@ -22,4 +22,8 @@ public record ConsultaRequestDTO(
 
         Especialidade especialidade
         ) {
+
+        public ConsultaDTO(Consulta consulta) {
+                this(consulta.getPaciente().getId(), consulta.getMedico().getId(), consulta.getDataConsulta(), consulta.getMedico().getEspecialidade());
+        }
 }
