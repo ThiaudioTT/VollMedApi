@@ -3,6 +3,10 @@ package med.voll.api.domain.medico;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 // This interface will be implemented by Spring Data JPA, so we don't need to implement the methods
 // This interface will be used to access the database and perform CRUD operations
@@ -13,4 +17,23 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     // The name of the method is important, because Spring Data JPA will use the method name to create the query
     // The method name is in the format "findAllBy" + "Field" + "Condition"
     Page<Medico> findAllByAtivoTrue(Pageable pageable);
+
+    // this method will return a random medico based on the specialization
+    // Optional is used to avoid null pointer exceptions
+    @Query(value = """
+                   select m.* from medicos m
+                   where
+                   m.ativo = 1
+                   and
+                   m.especialidade = :especialidade
+                   and
+                   m.id not in (
+                           select c.medico_id from consultas c
+                           where
+                           c.data_consulta = :data
+                   )
+                   order by rand()
+                   limit 1;
+                   """, nativeQuery = true)
+    Optional<Medico> findRandomByEspecialidade(@Param("especialidade") Especialidade especialidade, @Param("data") LocalDateTime data);
 }

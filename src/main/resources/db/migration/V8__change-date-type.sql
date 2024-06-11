@@ -1,0 +1,1 @@
+ALTER TABLE consultas MODIFY COLUMN data_consulta DATETIME NOT NULL;

@@ -40,16 +40,17 @@ public class AgendaConsultasService {
                 consulta.dataConsulta()
         );
 
-        this.consultaRepo.save(consultaAgendada);
 
-        // todo: it should return as well the id of the created entity
-        return consultaAgendada;
+        return this.consultaRepo.save(consultaAgendada);
     }
 
+    // randomly chooses a doctor based on the specialization
+    // todo: fix this method, it is not working as intended
     private Medico chooseMedico(ConsultaDTO consulta) {
+        // todo: see if IllegalArgumentException is the best exception to throw here
         if(consulta.especialidade() == null) throw new IllegalArgumentException("Especialidade é obrigatória");
 
-        // todo: this is a dummy implementation, it should be replaced by a real implementation
-        return new Medico();
+        return this.medicoRepo.findRandomByEspecialidade(consulta.especialidade(), consulta.dataConsulta())
+                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
     }
 }
