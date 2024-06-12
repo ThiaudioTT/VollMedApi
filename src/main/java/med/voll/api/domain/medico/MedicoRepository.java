@@ -20,20 +20,22 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
     // this method will return a random medico based on the specialization
     // Optional is used to avoid null pointer exceptions
+    // Note: the method wasn't working as intended because of the enum especialidade
+    // Idk why, but now I am converting to a string and it is working
     @Query(value = """
-                   select m.* from medicos m
-                   where
-                   m.ativo = 1
-                   and
-                   m.especialidade = :especialidade
-                   and
-                   m.id not in (
-                           select c.medico_id from consultas c
-                           where
-                           c.data_consulta = :data
-                   )
-                   order by rand()
-                   limit 1;
+            SELECT m.*\s
+                FROM medicos m
+                WHERE
+                    m.ativo = 1
+                    AND m.especialidade = :#{#especialidade.toString()}
+                    AND NOT EXISTS (
+                        SELECT 1\s
+                        FROM consultas c
+                        WHERE c.medico_id = m.id\s
+                          AND c.data_consulta = :data
+                    )
+                ORDER BY RAND()
+                LIMIT 1
                    """, nativeQuery = true)
     Optional<Medico> findRandomByEspecialidade(@Param("especialidade") Especialidade especialidade, @Param("data") LocalDateTime data);
 }

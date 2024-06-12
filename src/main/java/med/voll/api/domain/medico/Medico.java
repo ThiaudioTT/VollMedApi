@@ -23,6 +23,7 @@ public class Medico {
     private String crm;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "especialidade")
     private Especialidade especialidade;
 
     @Embedded
