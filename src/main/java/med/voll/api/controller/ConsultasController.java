@@ -2,16 +2,14 @@ package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import med.voll.api.domain.consultas.AgendaConsultasService;
-import med.voll.api.domain.consultas.ConsultaDTO;
+import med.voll.api.domain.consultas.CancelamentoConsultaDTO;
+import med.voll.api.domain.consultas.RequestConsultaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/consultas")
@@ -23,10 +21,20 @@ public class ConsultasController {
 
     @PostMapping("/agendar")
     @Transactional
-    public ResponseEntity<ConsultaDTO> agendarConsulta(@RequestBody @Valid ConsultaDTO consulta) {
+    public ResponseEntity<RequestConsultaDTO> agendarConsulta(@RequestBody @Valid RequestConsultaDTO consulta) {
         // A classe controller não deve trazer as regras de negócio da aplicação.
 
         // todo: retornar a URI
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ConsultaDTO(this.agenda.agendarConsulta(consulta)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RequestConsultaDTO(this.agenda.agendarConsulta(consulta)));
+    }
+
+    @PostMapping("/cancelar/{id}")
+    @Transactional
+    public ResponseEntity<CancelamentoConsultaDTO> cancelarConsulta(@PathVariable Long id, @RequestBody @NotEmpty String motivo) {
+        // we should not have business logic in the controller
+        // wherever we have a business rule, we should have a service
+        // there are exceptions, like validation, but this is not the case
+//        return ResponseEntity.ok().body(new RequestConsultaDTO(this.agenda.cancelarConsulta(id, motivo)));\
+        return ResponseEntity.ok().body(new CancelamentoConsultaDTO(this.agenda.cancelarConsulta(id, motivo)));
     }
 }

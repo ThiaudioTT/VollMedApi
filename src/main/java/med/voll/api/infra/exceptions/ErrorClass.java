@@ -52,4 +52,7 @@ public class ErrorClass {
             this(fieldError.getField(), fieldError.getDefaultMessage());
         }
     }
+
+
+    // todo: handle error 409 (conflict)
 }

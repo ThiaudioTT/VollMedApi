@@ -20,7 +20,7 @@ public class AgendaConsultasService {
     private PacienteRepository pacienteRepo;
 
     // this is where the business logic should be
-    public Consulta agendarConsulta(ConsultaDTO consulta) {
+    public Consulta agendarConsulta(RequestConsultaDTO consulta) {
         // todo: see if IllegalArgumentException is the best exception to throw here
         if(consulta.idMedico() == null && consulta.especialidade() == null) throw new IllegalArgumentException("Médico ou especialidade é obrigatório");
 
@@ -37,20 +37,37 @@ public class AgendaConsultasService {
                 medico,
                 this.pacienteRepo.findById(consulta.idPaciente())
                         .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado")),
-                consulta.dataConsulta()
+                consulta.dataConsulta(),
+                null,
+                null
         );
 
 
         return this.consultaRepo.save(consultaAgendada);
     }
 
+    /**
+     * Cancela uma consulta
+     * @param id
+     * @param motivo
+     * @return Consulta cancelada
+     */
+    public Consulta cancelarConsulta(Long id, String motivo) {
+        Consulta consultaCancelar = this.consultaRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada"));
+
+        if(consultaCancelar.getStatusConsulta() == StatusConsultaEnum.CANCELADA) throw new IllegalStateException("Consulta já cancelada");
+
+        consultaCancelar.cancelar(motivo);
+        return this.consultaRepo.save(consultaCancelar);
+    }
+
     // randomly chooses a doctor based on the specialization
-    // todo: fix this method, it is not working as intended
-    private Medico chooseMedico(ConsultaDTO consulta) {
+    private Medico chooseMedico(RequestConsultaDTO consulta) {
         // todo: see if IllegalArgumentException is the best exception to throw here
         if(consulta.especialidade() == null) throw new IllegalArgumentException("Especialidade é obrigatória");
 
         return this.medicoRepo.findRandomByEspecialidade(consulta.especialidade(), consulta.dataConsulta())
-                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado ou sem horário disponível"));
     }
 }

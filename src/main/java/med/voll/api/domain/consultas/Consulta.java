@@ -32,6 +32,18 @@ public class Consulta {
 
     private LocalDateTime dataConsulta;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusConsultaEnum statusConsulta;
+
+    @Column(name = "motivo_cancelamento")
+    private String motivo_cancelamento;
+
+    public void cancelar(String motivo) {
+        this.statusConsulta = StatusConsultaEnum.CANCELADA;
+        this.motivo_cancelamento = motivo;
+    }
+
     // Specialization is not being used in this class because it is already in the Medico class
     // Every Medico has a specialization
 //    private Especialidade especialidade;

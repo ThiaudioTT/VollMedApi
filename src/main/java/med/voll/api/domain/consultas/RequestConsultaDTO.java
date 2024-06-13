@@ -8,7 +8,7 @@ import med.voll.api.domain.medico.Especialidade;
 
 import java.time.LocalDateTime;
 
-public record ConsultaDTO(
+public record RequestConsultaDTO(
 
         // not blank is used with strings to validate if the string is not null and not empty
 //        @NotBlank(message = "Nome do paciente é obrigatório") String nomePaciente,
@@ -24,7 +24,8 @@ public record ConsultaDTO(
         Especialidade especialidade
         ) {
 
-        public ConsultaDTO(Consulta consulta) {
+        public RequestConsultaDTO(Consulta consulta) {
                 this(consulta.getPaciente().getId(), consulta.getMedico().getId(), consulta.getDataConsulta(), consulta.getMedico().getEspecialidade());
         }
+
 }
