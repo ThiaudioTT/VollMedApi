@@ -34,6 +34,11 @@ public class ErrorClass {
         return ResponseEntity.badRequest().body(errors.stream().map(Error::new).toList());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handle400(IllegalArgumentException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
+
     // Handle 400 for invalid JSON and other errors like it
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handle400(HttpMessageNotReadableException exception) {
