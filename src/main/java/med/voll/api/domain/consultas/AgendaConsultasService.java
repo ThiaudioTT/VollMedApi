@@ -1,11 +1,14 @@
 package med.voll.api.domain.consultas;
 
 import jakarta.persistence.EntityNotFoundException;
+import med.voll.api.domain.consultas.validationsAgendamentoConsulta.AgendaConsultaStrategy;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AgendaConsultasService {
@@ -19,6 +22,9 @@ public class AgendaConsultasService {
     @Autowired
     private PacienteRepository pacienteRepo;
 
+    @Autowired
+    private List<AgendaConsultaStrategy> validations;
+
     // this is where the business logic should be
     public Consulta agendarConsulta(RequestConsultaDTO consulta) {
         // todo: see if IllegalArgumentException is the best exception to throw here
@@ -31,7 +37,6 @@ public class AgendaConsultasService {
                 this.medicoRepo.findById(consulta.idMedico())
                         .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
 
-
         Consulta consultaAgendada = new Consulta(
                 null,
                 medico,
@@ -42,6 +47,8 @@ public class AgendaConsultasService {
                 null
         );
 
+        // before saving the consultation, we need to validate it
+        this.validations.forEach(v -> v.validate(consultaAgendada));
 
         return this.consultaRepo.save(consultaAgendada);
     }
