@@ -43,7 +43,7 @@ public class AgendaConsultasService {
                 this.pacienteRepo.findById(consulta.idPaciente())
                         .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado")),
                 consulta.dataConsulta(),
-                null,
+                StatusConsultaEnum.AGENDADA,
                 null
         );
 
