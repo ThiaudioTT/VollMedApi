@@ -5,6 +5,7 @@ import med.voll.api.domain.consultas.validationsAgendamentoConsulta.AgendaConsul
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
+import med.voll.api.infra.exceptions.InactiveEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class AgendaConsultasService {
     private PacienteRepository pacienteRepo;
 
     @Autowired
-    private List<AgendaConsultaStrategy> validations;
+    private List<AgendaConsultaStrategy> agendaConsultaValidations;
 
     // this is where the business logic should be
     public Consulta agendarConsulta(RequestConsultaDTO consulta) {
@@ -48,7 +49,7 @@ public class AgendaConsultasService {
         );
 
         // before saving the consultation, we need to validate it
-        this.validations.forEach(v -> v.validate(consultaAgendada));
+        this.agendaConsultaValidations.forEach(v -> v.validate(consultaAgendada));
 
         return this.consultaRepo.save(consultaAgendada);
     }
@@ -63,7 +64,7 @@ public class AgendaConsultasService {
         Consulta consultaCancelar = this.consultaRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada"));
 
-        if(consultaCancelar.getStatusConsulta() == StatusConsultaEnum.CANCELADA) throw new IllegalStateException("Consulta já cancelada");
+        if(consultaCancelar.getStatusConsulta() == StatusConsultaEnum.CANCELADA) throw new InactiveEntityException("Consulta já cancelada");
 
         consultaCancelar.cancelar(motivo);
         return this.consultaRepo.save(consultaCancelar);

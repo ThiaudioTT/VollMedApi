@@ -2,7 +2,9 @@ package med.voll.api.controller;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotEmpty;
+//import jakarta.validation.constraints.NotNull;
 import med.voll.api.domain.consultas.AgendaConsultasService;
 import med.voll.api.domain.consultas.CancelamentoConsultaDTO;
 import med.voll.api.domain.consultas.RequestConsultaDTO;
@@ -30,7 +32,7 @@ public class ConsultasController {
 
     @PostMapping("/cancelar/{id}")
     @Transactional
-    public ResponseEntity<CancelamentoConsultaDTO> cancelarConsulta(@PathVariable Long id, @RequestBody @NotEmpty String motivo) {
+    public ResponseEntity<CancelamentoConsultaDTO> cancelarConsulta(@PathVariable Long id, @RequestBody @NotBlank String motivo) {
         // we should not have business logic in the controller
         // wherever we have a business rule, we should have a service
         // there are exceptions, like validation, but this is not the case
