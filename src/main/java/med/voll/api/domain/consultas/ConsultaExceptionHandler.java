@@ -1,5 +1,6 @@
 package med.voll.api.domain.consultas;
 
+import med.voll.api.infra.exceptions.ConsultaConflictException;
 import med.voll.api.infra.exceptions.InactiveEntityException;
 import med.voll.api.infra.exceptions.OffBusinessHoursException;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class ConsultaExceptionHandler {
 
     @ExceptionHandler(InactiveEntityException.class)
     public ResponseEntity<String> handleInactiveEntityException(InactiveEntityException exception) {
+        return ResponseEntity.unprocessableEntity().body(exception.getMessage());
+    }
+
+    @ExceptionHandler(ConsultaConflictException.class)
+    public ResponseEntity<String> handleConsultaConflictException(ConsultaConflictException exception) {
         return ResponseEntity.unprocessableEntity().body(exception.getMessage());
     }
 }
