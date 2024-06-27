@@ -27,7 +27,7 @@ public class NonConflictingScheduleValidator implements AgendaConsultaStrategy {
                 });
 
         this.consultaRepository
-                .findByPacienteIdInADay(consulta.getPaciente().getId(), consulta.getDataConsulta().toLocalDate())
+                .findOneConsultaByPacienteIdAndDataConsulta(consulta.getPaciente().getId(), consulta.getDataConsulta().toLocalDate())
                 .ifPresent(c -> {
                     throw new ConsultaConflictException("Já existe uma consulta marcada para este paciente neste dia.");
                 });
