@@ -2,6 +2,7 @@ package med.voll.api.domain.consultas;
 
 import jakarta.persistence.EntityNotFoundException;
 import med.voll.api.domain.consultas.validationsAgendamentoConsulta.AgendaConsultaStrategy;
+import med.voll.api.domain.consultas.validationsCancelamentoConsulta.CancelaConsultaStrategy;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
@@ -25,6 +26,9 @@ public class AgendaConsultasService {
 
     @Autowired
     private List<AgendaConsultaStrategy> agendaConsultaValidations;
+
+    @Autowired
+    private List<CancelaConsultaStrategy> cancelaConsultaValidations;
 
     // this is where the business logic should be
     public Consulta agendarConsulta(RequestConsultaDTO consulta) {
@@ -65,6 +69,8 @@ public class AgendaConsultasService {
                 .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada"));
 
         if(consultaCancelar.getStatusConsulta() == StatusConsultaEnum.CANCELADA) throw new InactiveEntityException("Consulta já cancelada");
+
+        this.cancelaConsultaValidations.forEach(v -> v.validate(consultaCancelar));
 
         consultaCancelar.cancelar(motivo);
         return this.consultaRepo.save(consultaCancelar);
