@@ -26,7 +26,7 @@ public class ConsultasController {
     public ResponseEntity<RequestConsultaDTO> agendarConsulta(@RequestBody @Valid RequestConsultaDTO consulta) {
         // A classe controller não deve trazer as regras de negócio da aplicação.
 
-        // todo: retornar a URI
+        // todo: retornar a URI e o ID da consulta
         return ResponseEntity.status(HttpStatus.CREATED).body(new RequestConsultaDTO(this.agenda.agendarConsulta(consulta)));
     }
 
