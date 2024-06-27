@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/medicos")
+@SecurityRequirement(name = "bearer-key") // this is a security requirement for swagger, it tells that the endpoint needs a bearer token
 public class MedicoController {
 
     @Autowired
