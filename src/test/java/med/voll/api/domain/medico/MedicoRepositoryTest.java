@@ -1,6 +1,7 @@
 package med.voll.api.domain.medico;
 
 import med.voll.api.tools.CommonEntityCreation;
+import med.voll.api.tools.CommonEntityCreationJPA;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-class MedicoRepositoryTest extends CommonEntityCreation {
+class MedicoRepositoryTest extends CommonEntityCreationJPA {
 
     @Autowired
     private MedicoRepository medicoRepository;
@@ -34,9 +35,9 @@ class MedicoRepositoryTest extends CommonEntityCreation {
     @DisplayName("Should return a random medico based on the especialidade")
     void findRandomByEspecialidadeMedico() {
         // create a medico
-        var especialidade = this.getRandomEspecialidade();
+        var especialidade = CommonEntityCreation.getRandomEspecialidade();
 
-        var medico = createMedico(especialidade);
+        var medico = CommonEntityCreation.createMedico(especialidade);
         // save the medico
         medicoRepository.save(medico);
 

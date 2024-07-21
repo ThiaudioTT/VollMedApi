@@ -3,25 +3,15 @@ package med.voll.api.tools;
 import med.voll.api.domain.endereco.Endereco;
 import med.voll.api.domain.medico.Especialidade;
 import med.voll.api.domain.medico.Medico;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.ActiveProfiles;
+import med.voll.api.domain.paciente.Paciente;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("test")
 public class CommonEntityCreation {
-
-    @Autowired
-    private TestEntityManager em;
 
     /**
      * Create a medico
      * @return the medico created
      */
-    public Medico createMedico() {
+    public static Medico createMedico() {
         return new Medico(
                 1L,
                 "Dr. House",
@@ -41,7 +31,7 @@ public class CommonEntityCreation {
         );
     }
 
-    public Medico createMedico(Especialidade especialidade) {
+    public static Medico createMedico(Especialidade especialidade) {
         return new Medico(
                 2L,
                 "Jose Especialidade",
@@ -61,19 +51,31 @@ public class CommonEntityCreation {
         );
     }
 
-    /**
-     * Save a medico in the database
-     * @return the medico saved
-     */
-    public Medico saveMedico() {
-        return em.persist(createMedico());
-    }
-
-    public Medico saveMedico(Especialidade especialidade) {
-        return em.persist(createMedico(especialidade));
-    }
-
-    public Especialidade getRandomEspecialidade() {
+    public static Especialidade getRandomEspecialidade() {
         return Especialidade.values()[(int) (Math.random() * Especialidade.values().length)];
+    }
+
+    public static Paciente createPaciente() {
+        return new Paciente(
+                1L,
+                "Paciente Teste",
+                "paciente@email.com",
+                "6199999999",
+                "123456",
+                createEndereco(),
+                true
+        );
+    }
+
+    public static Endereco createEndereco() {
+        return new Endereco(
+                "Rua dos Bobos",
+                "Jardim Recreio",
+                "72910280",
+                "12",
+                "casa",
+                "Brasília",
+                "DF"
+        );
     }
 }
