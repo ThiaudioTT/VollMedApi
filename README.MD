@@ -4,6 +4,8 @@ VollMed API is a REST API for a medical clinic. It was developed in Java using S
 
 The main purpose of this project is to learn how to create a REST API using Spring Boot and other technologies.
 
+THIS SHOULD NOT BE USED IN PRODUCTION.
+
 Project initially generated in [Spring Initializr](https://start.spring.io/).
 
 This project was made alongside the [Alura](https://cursos.alura.com.br/formacao-spring-boot-3).
